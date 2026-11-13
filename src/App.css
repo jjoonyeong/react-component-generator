@@ -320,6 +320,16 @@
   gap: 8px;
 }
 
+.prompt-feedback {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.prompt-feedback--error {
+  color: #b91c1c;
+}
+
 .prompt-examples {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
