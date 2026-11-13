@@ -1,0 +1,53 @@
+# Project-scoped Codex permissions (trusted projects only).
+# Do not combine with sandbox_mode / sandbox_workspace_write or --sandbox.
+default_permissions = "project-safe"
+approval_policy = "never"
+
+[permissions.project-safe]
+description = "Edit the project while denying sensitive files and credentials."
+extends = ":workspace"
+
+[permissions.project-safe.filesystem]
+# Windows/Linux glob expansion is a per-process snapshot, bounded to this depth.
+glob_scan_max_depth = 16
+
+[permissions.project-safe.filesystem.":workspace_roots"]
+# Exact paths also protect the usual sensitive directories as a whole.
+".env" = "deny"
+".ssh" = "deny"
+".aws" = "deny"
+".azure" = "deny"
+".kube" = "deny"
+"credentials" = "deny"
+"secrets" = "deny"
+
+# Include templates/backups and nested paths; no example-file exception.
+"**/.env*" = "deny"
+"**/*.env" = "deny"
+"**/*.env.*" = "deny"
+"**/*[cC][rR][eE][dD][eE][nN][tT][iI][aA][lL]*" = "deny"
+"**/*[sS][eE][cC][rR][eE][tT]*" = "deny"
+"**/.ssh" = "deny"
+"**/.aws" = "deny"
+"**/.azure" = "deny"
+"**/.kube" = "deny"
+"**/.npmrc" = "deny"
+"**/.pypirc" = "deny"
+"**/.netrc" = "deny"
+"**/_netrc" = "deny"
+"**/.git-credentials" = "deny"
+"**/.docker/config.json" = "deny"
+"**/*.[pP][eE][mM]" = "deny"
+"**/*.[kK][eE][yY]" = "deny"
+"**/*.[pP]12" = "deny"
+"**/*.[pP][fF][xX]" = "deny"
+"**/*.[jJ][kK][sS]" = "deny"
+"**/*.[kK][eE][yY][sS][tT][oO][rR][eE]" = "deny"
+"**/id_rsa*" = "deny"
+"**/id_ed25519*" = "deny"
+"**/id_ecdsa*" = "deny"
+"**/id_dsa*" = "deny"
+
+# Preserve command network access; this profile adds filesystem restrictions.
+[permissions.project-safe.network]
+enabled = true

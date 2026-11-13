@@ -1,0 +1,26 @@
+{
+  "description": "Commit test protection and pre-edit TypeScript TDD reminders.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/commit-protection.mjs\"",
+            "commandWindows": "powershell.exe -NoProfile -NonInteractive -Command \"& node (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/commit-protection.mjs')\"",
+            "timeout": 300,
+            "statusMessage": "Checking commit test protection"
+          },
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/tdd-reminder.mjs\"",
+            "commandWindows": "powershell.exe -NoProfile -NonInteractive -Command \"& node (Join-Path (git rev-parse --show-toplevel) '.codex/hooks/tdd-reminder.mjs')\"",
+            "timeout": 10,
+            "statusMessage": "Checking TypeScript TDD reminder",
+            "additionalContextLimit": 5000
+          }
+        ]
+      }
+    ]
+  }
+}
