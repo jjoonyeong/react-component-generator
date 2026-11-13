@@ -8,12 +8,14 @@ interface ComponentCardProps {
   onRemove: (id: string) => void;
   onRegenerate: (prompt: string) => void;
   isLoading: boolean;
+  isStreaming?: boolean;
 }
 
 type Tab = 'preview' | 'code';
 
-export function ComponentCard({ component, onRemove, onRegenerate, isLoading }: ComponentCardProps) {
-  const [activeTab, setActiveTab] = useState<Tab>('preview');
+export function ComponentCard({ component, onRemove, onRegenerate, isLoading, isStreaming = false }: ComponentCardProps) {
+  const [selectedTab, setActiveTab] = useState<Tab>('preview');
+  const activeTab = isStreaming ? 'code' : selectedTab;
   const [previewKey, setPreviewKey] = useState(0);
   const createdAt = component.createdAt.toLocaleTimeString('ko-KR', {
     hour: '2-digit',
@@ -30,6 +32,7 @@ export function ComponentCard({ component, onRemove, onRegenerate, isLoading }: 
         <div className="card-actions">
           <button
             className="btn-refresh"
+            disabled={isStreaming}
             onClick={() => setPreviewKey((k) => k + 1)}
             title="미리보기 새로고침"
             aria-label="미리보기 새로고침"
@@ -45,6 +48,7 @@ export function ComponentCard({ component, onRemove, onRegenerate, isLoading }: 
           </button>
           <button
             className="btn-remove"
+            disabled={isStreaming}
             onClick={() => onRemove(component.id)}
           >
             삭제
@@ -54,18 +58,21 @@ export function ComponentCard({ component, onRemove, onRegenerate, isLoading }: 
       <div className="card-tabs">
         <button
           className={`tab ${activeTab === 'preview' ? 'tab--active' : ''}`}
+          disabled={isStreaming}
           onClick={() => setActiveTab('preview')}
         >
           미리보기
         </button>
         <button
           className={`tab ${activeTab === 'code' ? 'tab--active' : ''}`}
+          disabled={isStreaming}
           onClick={() => setActiveTab('code')}
         >
           코드
         </button>
       </div>
       <div className="card-content">
+        {isStreaming && <p role="status">코드를 생성하고 있습니다...</p>}
         {activeTab === 'preview' ? (
           <LivePreview key={previewKey} code={component.code} />
         ) : (
