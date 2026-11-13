@@ -30,6 +30,8 @@ bun run dev
 
 ## 주요 기능
 
+Codex의 커밋 보호 및 TypeScript 수정 전 TDD 리마인더 설정은 [훅 안내](.codex/hooks/README.md)를 참조하세요. 새 훅은 Codex에서 검토하고 신뢰해야 실행됩니다.
+
 - **멀티 프로바이더**: Anthropic Claude / Google Gemini 선택
 - **실시간 미리보기**: 생성된 컴포넌트를 즉시 렌더링
 - **새로고침**: 애니메이션 컴포넌트를 리마운트하여 다시 보기
